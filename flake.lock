@@ -20,6 +20,21 @@
         "type": "github"
       }
     },
+    "nixCats": {
+      "locked": {
+        "lastModified": 1749615682,
+        "narHash": "sha256-3T2Yl+xSnx7snXZkMaQNHCvlj0CB+lyAj+Q/+eeh+Ns=",
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "rev": "c0148957e961100bff3fd213b8a4bc5f669f3028",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "nixCats-nvim",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1749285348,
@@ -36,10 +51,32 @@
         "type": "github"
       }
     },
+    "nvim-config": {
+      "inputs": {
+        "nixCats": "nixCats",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1749842877,
+        "narHash": "sha256-0uLzRDi1+sFGgpT2U0HAqlXGkmZ25H7/DPsTL6rMll4=",
+        "owner": "andreszb",
+        "repo": "nvim-config",
+        "rev": "746e94e6ce29f2e0706ff279d2d7251bf024a917",
+        "type": "github"
+      },
+      "original": {
+        "owner": "andreszb",
+        "repo": "nvim-config",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "home-manager": "home-manager",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "nvim-config": "nvim-config"
       }
     }
   },
