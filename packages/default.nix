@@ -1,6 +1,10 @@
-{ pkgs, userConfig, ompTheme, shellAliases }:
+{ pkgs, userConfig, shellAliases }:
 
 let
+  # Import oh-my-posh first to get the theme config
+  oh-my-posh = import ./oh-my-posh.nix { inherit pkgs; };
+  ompTheme = oh-my-posh.themeConfig;
+  
   # Import all package configurations
   packages = {
     bat = import ./bat.nix { inherit pkgs; };
@@ -9,11 +13,11 @@ let
     git = import ./git.nix { inherit pkgs userConfig; };
     delta = import ./delta.nix { inherit pkgs; };
     neofetch = import ./neofetch.nix { inherit pkgs; };
-    oh-my-posh = import ./oh-my-posh.nix { inherit pkgs; };
+    inherit oh-my-posh;
     openssh = import ./openssh.nix { inherit pkgs; };
     yazi = import ./yazi.nix { inherit pkgs; };
     zoxide = import ./zoxide.nix { inherit pkgs; };
-    zsh = import ./zsh.nix { inherit pkgs userConfig ompTheme shellAliases; };
+    zsh = import ./zsh.nix { inherit pkgs userConfig shellAliases ompTheme; };
     direnv = import ./direnv.nix { inherit pkgs; };
     xclip = import ./xclip.nix { inherit pkgs; };
   };

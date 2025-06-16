@@ -1,5 +1,6 @@
 {
   # Directory listing
+  ls = "eza --icons";
   ll = "eza -la --icons --git";
   la = "eza -a --icons";
   lt = "eza --tree --icons";

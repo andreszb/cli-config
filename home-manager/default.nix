@@ -1,7 +1,7 @@
-{ config, pkgs, userConfig, ompTheme, shellAliases, nvim-config, ... }:
+{ config, pkgs, userConfig, shellAliases, nvim-config, ... }:
 
 let
-  packagesConfig = import ./packages { inherit pkgs userConfig ompTheme shellAliases; };
+  packagesConfig = import ../packages { inherit pkgs userConfig shellAliases; };
 in
 {
   home = {
@@ -15,7 +15,7 @@ in
       PAGER = "bat";
     };
     
-    file.".config/oh-my-posh/theme.json".text = builtins.toJSON ompTheme;
+    file.".config/oh-my-posh/theme.json".text = builtins.toJSON packagesConfig.packages.oh-my-posh.themeConfig;
   };
   
   programs = {

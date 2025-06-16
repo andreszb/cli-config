@@ -31,17 +31,17 @@
       # Import configurations
       userConfig = import ./user;
       shellAliases = import ./shells/aliases.nix;
-      ompTheme = import ./themes/oh-my-posh.nix;
       
       # Function to create temporary shell environment
       mkCliShell = system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          packagesConfig = import ./packages { inherit pkgs ompTheme shellAliases; userConfig = userConfig.userConfig; };
+          packagesConfig = import ./packages { inherit pkgs shellAliases; userConfig = userConfig.userConfig; };
         in
         import ./shells/temp-shell.nix {
-          inherit pkgs ompTheme shellAliases nvim-config;
+          inherit pkgs shellAliases nvim-config;
           packages = packagesConfig.packageList;
+          ompTheme = packagesConfig.packages.oh-my-posh.themeConfig;
           userConfig = userConfig.userConfig;
         };
       
@@ -60,7 +60,7 @@
           modules = [
             (import ./home-manager {
               userConfig = userConfig.userConfig;
-              inherit ompTheme shellAliases nvim-config;
+              inherit shellAliases nvim-config;
             })
             {
               home = {
