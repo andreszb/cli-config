@@ -15,7 +15,7 @@ in
       PAGER = "bat";
     };
     
-    file.".config/oh-my-posh/theme.json".text = builtins.toJSON packagesConfig.packages.oh-my-posh.themeConfig;
+    file = packagesConfig.fileConfigs;
   };
   
   programs = {

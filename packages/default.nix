@@ -57,10 +57,22 @@ let
     zsh = packages.zsh.homeManagerConfig or {};
     direnv = packages.direnv.homeManagerConfig or {};
     fonts = packages.fonts.homeManagerConfig or {};
+    oh-my-posh = packages.oh-my-posh.homeManagerConfig or {};
   };
+
+  # Extract file configurations
+  getFileConfigs = packages:
+    let
+      collectFileConfigs = packageConfig:
+        if packageConfig ? fileConfig then packageConfig.fileConfig
+        else {};
+    in
+    builtins.foldl' (acc: fileConfig: acc // fileConfig) {} 
+      (builtins.map collectFileConfigs (builtins.attrValues packages));
 
 in {
   inherit packages;
   packageList = getPackages packages;
   homeManagerConfigs = getHomeManagerConfigs packages;
+  fileConfigs = getFileConfigs packages;
 }

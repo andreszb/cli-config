@@ -313,4 +313,9 @@ in {
     enableZshIntegration = true;
     useTheme = builtins.toJSON themeConfig;
   };
+  
+  # File configuration for theme.json
+  fileConfig = {
+    ".config/oh-my-posh/theme.json".text = builtins.toJSON themeConfig;
+  };
 }
