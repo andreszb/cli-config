@@ -20,6 +20,17 @@ let
     zsh = import ./zsh.nix { inherit pkgs userConfig shellAliases ompTheme; };
     direnv = import ./direnv.nix { inherit pkgs; };
     xclip = import ./xclip.nix { inherit pkgs; };
+    # Utility packages
+    fd = import ./fd.nix { inherit pkgs; };
+    ripgrep = import ./ripgrep.nix { inherit pkgs; };
+    jq = import ./jq.nix { inherit pkgs; };
+    btop = import ./btop.nix { inherit pkgs; };
+    httpie = import ./httpie.nix { inherit pkgs; };
+    procs = import ./procs.nix { inherit pkgs; };
+    tldr = import ./tldr.nix { inherit pkgs; };
+    zip = import ./zip.nix { inherit pkgs; };
+    coreutils = import ./coreutils.nix { inherit pkgs; };
+    fonts = import ./fonts.nix { inherit pkgs; };
   };
 
   # Extract packages from package configurations
@@ -45,6 +56,7 @@ let
     zoxide = packages.zoxide.homeManagerConfig or {};
     zsh = packages.zsh.homeManagerConfig or {};
     direnv = packages.direnv.homeManagerConfig or {};
+    fonts = packages.fonts.homeManagerConfig or {};
   };
 
 in {

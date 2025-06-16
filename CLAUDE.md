@@ -126,3 +126,7 @@ The environment includes integrated configurations for:
 - **Git**: Pre-configured with user info, aliases, and Delta diff viewer
 - **Oh-my-posh**: Custom theme with session, path, and git status segments
 - **Development Tools**: bat, eza, fzf, yazi, zoxide with cross-tool integration
+
+## Workflow Guidance
+
+- We should add the new files to Git before performing any Nix command.
