@@ -22,7 +22,6 @@ This configuration offers two deployment modes:
 ### Prerequisites
 
 - [Nix](https://nixos.org/download.html) with flakes enabled
-- For permanent installation: [Home Manager](https://github.com/nix-community/home-manager)
 
 ### Temporary Shell (Try it out)
 
@@ -39,18 +38,7 @@ This gives you immediate access to all configured tools in an isolated environme
 
 ### Permanent Installation
 
-#### 1. Install Home Manager (if not already installed)
-
-```bash
-# Add Home Manager channel
-nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-nix-channel --update
-
-# Install Home Manager
-nix-shell '<home-manager>' -A install
-```
-
-#### 2. Configure User Settings
+#### 1. Configure User Settings
 
 Edit `user/default.nix` with your information:
 
@@ -64,13 +52,27 @@ Edit `user/default.nix` with your information:
 }
 ```
 
-#### 3. Install the Configuration
+#### 2. Install Permanently
 
 ```bash
-# Clone the configuration
-git clone https://github.com/andreszb/cli-config.git ~/.config/cli-config
-cd ~/.config/cli-config
+# Clone the repository
+git clone https://github.com/andreszb/cli-config.git
+cd cli-config
 
+# Enter temporary shell
+nix develop
+
+# Install permanently (automatically installs home-manager if needed)
+install-permanent
+```
+
+This method automatically installs home-manager if it's not already available, then applies the permanent configuration.
+
+#### Alternative: Manual Installation
+
+If you already have home-manager installed:
+
+```bash
 # Install with Home Manager
 home-manager switch --flake .
 ```
@@ -108,11 +110,12 @@ home-manager switch --flake .
 
 ### Custom Features
 
-#### SSH Setup Function
-The configuration includes a `copyssh()` function for easy GitHub SSH setup:
+#### Built-in Commands
+The shell environment includes helpful commands:
 
 ```bash
-copyssh  # Copies SSH public key to clipboard and opens GitHub SSH settings
+copyssh           # Set up SSH keys for GitHub (copies to clipboard)
+install-permanent # Install configuration permanently (from temporary shell)
 ```
 
 #### Shell Aliases

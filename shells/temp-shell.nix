@@ -143,7 +143,211 @@ let
       echo "🔍 Troubleshooting:"
       echo "   • View public key: cat $pub_key_path"
       echo "   • Test GitHub connection: ssh -T git@github.com"
-      echo "   • Check SSH agent: ssh-add -l"
+      echo "   • Check SSH agent: ssh -add -l"
+    }
+    
+    # Install permanent configuration
+    install-permanent() {
+      echo "🏠 Installing permanent CLI configuration..."
+      echo ""
+      
+      # Check if we're in the right directory
+      if [[ ! -f "flake.nix" ]]; then
+        echo "❌ Error: flake.nix not found. Please run this from the cli-config directory."
+        return 1
+      fi
+      
+      # Check if home-manager is available
+      if ! command -v home-manager >/dev/null 2>&1; then
+        echo "📦 Installing home-manager..."
+        
+        # Add home-manager channel
+        nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+        nix-channel --update
+        
+        # Install home-manager
+        nix-shell '<home-manager>' -A install
+        
+        if ! command -v home-manager >/dev/null 2>&1; then
+          echo "❌ Failed to install home-manager. Trying alternative method..."
+          
+          # Alternative: install via nix profile
+          nix profile install nixpkgs#home-manager
+          
+          if ! command -v home-manager >/dev/null 2>&1; then
+            echo "❌ Could not install home-manager. Please install manually:"
+            echo "   https://nix-community.github.io/home-manager/index.html#installation"
+            return 1
+          fi
+        fi
+        
+        echo "✅ home-manager installed"
+      else
+        echo "✅ home-manager already available"
+      fi
+      
+      echo ""
+      echo "🔧 Applying permanent configuration..."
+      
+      # Apply the configuration
+      if home-manager switch --flake .; then
+        echo ""
+        echo "🎉 Permanent configuration installed successfully!"
+        echo ""
+        echo "🎯 What changed:"
+        echo "   • All CLI tools are now permanently available"
+        echo "   • Shell configuration applied to your default shell"
+        echo "   • Configuration files installed in ~/.config/"
+        echo ""
+        echo "🔄 To update the configuration:"
+        echo "   home-manager switch --flake ."
+        echo ""
+        echo "🗑️  To remove:"
+        echo "   home-manager uninstall"
+        echo ""
+        echo "💡 You can now exit this temporary shell and enjoy your permanent setup!"
+      else
+        echo "❌ Failed to apply home-manager configuration"
+        echo "🔍 Check the error messages above for details"
+        return 1
+      fi
+    }
+    
+    # Uninstall permanent configuration
+    uninstall-permanent() {
+      echo "🗑️  Uninstalling permanent CLI configuration..."
+      echo ""
+      
+      # Check if home-manager is available
+      if ! command -v home-manager >/dev/null 2>&1; then
+        echo "❌ home-manager not found. Configuration may not be installed."
+        return 1
+      fi
+      
+      # Confirm before proceeding
+      echo "⚠️  This will:"
+      echo "   • Remove all CLI tools installed by this configuration"
+      echo "   • Restore your previous shell configuration"
+      echo "   • Clean up home-manager configuration files"
+      echo "   • Remove generated configuration files"
+      echo ""
+      echo -n "Are you sure you want to continue? (y/N): "
+      read -r response
+      
+      if [[ ! "$response" =~ ^[Yy]$ ]]; then
+        echo "❌ Uninstall cancelled."
+        return 0
+      fi
+      
+      echo ""
+      echo "📦 Creating backup of current configuration..."
+      
+      # Create backup directory with timestamp
+      local backup_dir="$HOME/.config/cli-config-backup-$(date +%Y%m%d-%H%M%S)"
+      mkdir -p "$backup_dir"
+      
+      # Backup important files that might be modified
+      for file in ~/.zshrc ~/.bashrc ~/.config/git/config ~/.gitconfig; do
+        if [[ -f "$file" ]]; then
+          cp "$file" "$backup_dir/" 2>/dev/null && echo "✅ Backed up $file"
+        fi
+      done
+      
+      echo ""
+      echo "🔧 Removing home-manager configuration..."
+      
+      # Get the current generation before removal
+      local current_gen
+      current_gen=$(home-manager generations | head -1 | awk '{print $5}' 2>/dev/null || echo "")
+      
+      # Remove the home-manager configuration
+      if home-manager uninstall 2>/dev/null; then
+        echo "✅ home-manager configuration removed"
+      else
+        echo "⚠️  home-manager uninstall not available, trying manual cleanup..."
+        
+        # Manual cleanup of home-manager files
+        local hm_files=(
+          ~/.config/home-manager
+          ~/.local/state/home-manager
+          ~/.local/share/home-manager
+        )
+        
+        for file in "''${hm_files[@]}"; do
+          if [[ -e "$file" ]]; then
+            rm -rf "$file" && echo "✅ Removed $file"
+          fi
+        done
+      fi
+      
+      echo ""
+      echo "🧹 Cleaning up configuration files..."
+      
+      # Clean up specific configuration files created by our tools
+      local config_files=(
+        ~/.config/bat
+        ~/.config/btop
+        ~/.config/yazi
+        ~/.config/oh-my-posh
+        ~/.config/direnv
+      )
+      
+      for file in "''${config_files[@]}"; do
+        if [[ -e "$file" ]] && [[ -w "$file" ]]; then
+          echo -n "Remove $file? (y/N): "
+          read -r remove_response
+          if [[ "$remove_response" =~ ^[Yy]$ ]]; then
+            rm -rf "$file" && echo "✅ Removed $file"
+          else
+            echo "⏭️  Skipped $file"
+          fi
+        fi
+      done
+      
+      echo ""
+      echo "🔄 Cleaning up shell modifications..."
+      
+      # Check for home-manager shell integration and offer to remove
+      for shell_file in ~/.zshrc ~/.bashrc; do
+        if [[ -f "$shell_file" ]] && grep -q "home-manager" "$shell_file" 2>/dev/null; then
+          echo "⚠️  Found home-manager references in $shell_file"
+          echo -n "Remove home-manager lines from $shell_file? (y/N): "
+          read -r remove_shell
+          if [[ "$remove_shell" =~ ^[Yy]$ ]]; then
+            # Create backup
+            cp "$shell_file" "$shell_file.pre-uninstall-backup"
+            # Remove home-manager lines
+            sed -i.bak '/home-manager/d' "$shell_file" 2>/dev/null && echo "✅ Cleaned $shell_file"
+          fi
+        fi
+      done
+      
+      echo ""
+      echo "🧽 Cleaning up environment variables..."
+      
+      # Remove session variables file if it exists
+      local session_vars="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+      if [[ -f "$session_vars" ]]; then
+        echo "⚠️  Found session variables file: $session_vars"
+        echo "   This will be cleaned up when you restart your shell."
+      fi
+      
+      echo ""
+      echo "🎯 Uninstall Summary:"
+      echo "   ✅ Configuration backed up to: $backup_dir"
+      echo "   ✅ home-manager configuration removed"
+      echo "   ✅ CLI-specific config files cleaned"
+      echo "   ✅ Shell modifications cleaned"
+      echo ""
+      echo "🔄 Next steps:"
+      echo "   1. Restart your shell or run: source ~/.zshrc (or ~/.bashrc)"
+      echo "   2. Your system should be back to its previous state"
+      echo "   3. If you experience issues, restore from: $backup_dir"
+      echo ""
+      echo "💡 To reinstall later:"
+      echo "   cd $(pwd) && nix develop, then run: install-permanent"
+      echo ""
+      echo "🎉 Uninstall completed successfully!"
     }
   '';
   
@@ -171,6 +375,11 @@ in pkgs.mkShell {
     
     echo "🚀 Entering temporary CLI environment..."
     echo "📦 All tools loaded! Type 'exit' to leave."
+    echo ""
+    echo "💡 Available commands:"
+    echo "   • copyssh             - Set up SSH keys for GitHub"
+    echo "   • install-permanent   - Install this configuration permanently"
+    echo "   • uninstall-permanent - Remove permanent installation and restore system"
     echo ""
     
     exec ${pkgs.zsh}/bin/zsh
