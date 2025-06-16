@@ -5,7 +5,7 @@
     fira-code
     fira-code-symbols
     nerd-fonts.fira-code
-    font-manager
+    # font-manager  # This might cause webkit issues
     font-awesome_5
     noto-fonts
   ];
