@@ -13,14 +13,28 @@ help() {
         return 1
     fi
     
+    # Define script descriptions and examples
+    declare -A script_info
+    script_info[copyssh]="Generate SSH key and configure GitHub|copyssh"
+    script_info[mkcd]="Create directory and cd into it|mkcd new-folder"
+    
+    # Print table header
+    printf "%-12s %-35s %s\n" "SCRIPT" "DESCRIPTION" "EXAMPLE"
+    printf "%-12s %-35s %s\n" "------" "-----------" "-------"
+    
     # List all .sh files in the zsh scripts directory
-    # Use array to handle case where no .sh files exist
     local scripts=("$SCRIPTS"/*.sh)
     if [[ -f "${scripts[1]}" ]]; then
         for script in "${scripts[@]}"; do
             if [[ -f "$script" && "$(basename "$script")" != "help.sh" ]]; then
                 local script_name=$(basename "$script" .sh)
-                echo "  • $script_name"
+                
+                # Get description and example from the associative array
+                local info_string="${script_info[$script_name]:-"No description available|$script_name"}"
+                local description="${info_string%|*}"
+                local example="${info_string#*|}"
+                
+                printf "%-12s %-35s %s\n" "$script_name" "$description" "$example"
             fi
         done
     else
@@ -28,8 +42,7 @@ help() {
     fi
     
     echo ""
-    echo "Usage: Run any script name as a command"
-    echo "Example: mkcd my-new-directory"
+    echo "Usage: Run any script name as a command from anywhere in your system"
 }
 
 # Only run help if script is executed directly (not sourced)
