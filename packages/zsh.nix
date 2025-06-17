@@ -5,21 +5,35 @@
   plugins = [
     pkgs.zsh-syntax-highlighting
     pkgs.zsh-autosuggestions
+    pkgs.zsh-autocomplete
+    pkgs.zsh-fzf-tab
+    pkgs.zsh-nix-shell
+    pkgs.zsh-you-should-use
   ];
   
   homeManagerConfig = {
     enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    
     inherit shellAliases;
-    
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" "sudo" "colored-man-pages" "command-not-found" "aliases" "fzf" ];
+      extraConfig = ''
+        # Required for autocomplete with box: https://unix.stackexchange.com/a/778868
+        zstyle ':completion:*' completer _expand _complete _ignored _approximate _expand_alias
+        zstyle ':autocomplete:*' default-context curcontext 
+        zstyle ':autocomplete:*' min-input 0
+
+        setopt HIST_FIND_NO_DUPS
+
+        autoload -Uz compinit
+        compinit
+
+        setopt autocd  # cd without writing 'cd'
+        setopt globdots # show dotfiles in autocomplete list
+      '';
     };
-    
+    syntaxHighlighting.enable = true;
+    autosuggestion.enable = true;
     initContent = ''
       # Set scripts directory environment variable
       export SCRIPTS="$HOME/.config/scripts/zsh"
