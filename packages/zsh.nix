@@ -45,7 +45,7 @@
       eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.json)"
 
       # Auto-list files when changing directories
-      function _list_files_after_cd() {
+      _list_files_after_cd() {
         local file_count=$(ls -1 2>/dev/null | wc -l)
         if [ $file_count -le 20 ]; then
           eza --icons --group-directories-first -t modified 2>/dev/null
@@ -55,7 +55,7 @@
       }
 
       # Override cd function to work with zoxide
-      function cd() {
+      cd() {
         __zoxide_z "$@"
         local exit_code=$?
         if [ $exit_code -eq 0 ]; then
