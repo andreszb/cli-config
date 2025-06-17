@@ -71,18 +71,6 @@
                   then "/Users/${userConfig.userConfig.username}"
                   else "/home/${userConfig.userConfig.username}";
                 stateVersion = "24.05";
-                file.".config/scripts/zsh/copyssh.sh" = {
-                  text = builtins.replaceStrings ["''${userConfig.email}"] [userConfig.userConfig.email] (builtins.readFile ./scripts/zsh/copyssh.sh);
-                  executable = true;
-                };
-                file.".config/scripts/zsh/help.sh" = {
-                  source = ./scripts/zsh/help.sh;
-                  executable = true;
-                };
-                file.".config/scripts/zsh/mkcd.sh" = {
-                  source = ./scripts/zsh/mkcd.sh;
-                  executable = true;
-                };
               };
             }
           ];
