@@ -72,6 +72,10 @@
                   then "/Users/${userConfig.userConfig.username}"
                   else "/home/${userConfig.userConfig.username}";
                 stateVersion = "24.05";
+                file.".config/scripts" = {
+                   source = ./scripts;
+                   recursive = true;
+                };
               };
             }
           ];
