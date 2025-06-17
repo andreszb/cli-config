@@ -30,7 +30,6 @@ let
     tldr = import ./tldr.nix { inherit pkgs; };
     zip = import ./zip.nix { inherit pkgs; };
     coreutils = import ./coreutils.nix { inherit pkgs; };
-    fonts = import ./fonts.nix { inherit pkgs; };
   };
 
   # Extract packages from package configurations
@@ -56,9 +55,11 @@ let
     zoxide = packages.zoxide.homeManagerConfig or {};
     zsh = packages.zsh.homeManagerConfig or {};
     direnv = packages.direnv.homeManagerConfig or {};
-    fonts = packages.fonts.homeManagerConfig or {};
     oh-my-posh = packages.oh-my-posh.homeManagerConfig or {};
   };
+
+  # Extract top-level configurations
+  getTopLevelConfigs = packages: {};
 
   # Extract file configurations
   getFileConfigs = packages:
@@ -74,5 +75,6 @@ in {
   inherit packages;
   packageList = getPackages packages;
   homeManagerConfigs = getHomeManagerConfigs packages;
+  topLevelConfigs = getTopLevelConfigs packages;
   fileConfigs = getFileConfigs packages;
 }

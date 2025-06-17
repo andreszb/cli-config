@@ -21,4 +21,4 @@ in
   programs = {
     home-manager.enable = true;
   } // packagesConfig.homeManagerConfigs;
-}
+} // packagesConfig.topLevelConfigs

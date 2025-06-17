@@ -57,11 +57,13 @@
         ${userConfig.userConfig.username} = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem or "x86_64-linux"};
           
+          extraSpecialArgs = {
+            userConfig = userConfig.userConfig;
+            inherit shellAliases nvim-config;
+          };
+          
           modules = [
-            (import ./home-manager {
-              userConfig = userConfig.userConfig;
-              inherit shellAliases nvim-config;
-            })
+            (import ./home-manager/default.nix)
             {
               home = {
                 username = userConfig.userConfig.username;
