@@ -1,6 +1,39 @@
 #!/usr/bin/env zsh
 
 copyssh() {
+  # Handle --help option
+  if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+    echo "copyssh - Generate SSH key and configure GitHub authentication"
+    echo ""
+    echo "DESCRIPTION:"
+    echo "  Automates the complete SSH key setup process for GitHub, including:"
+    echo "  • Generates Ed25519 SSH key if it doesn't exist"
+    echo "  • Starts SSH agent and adds the key"
+    echo "  • Copies public key to clipboard"
+    echo "  • Configures commit signing with SSH"
+    echo "  • Provides step-by-step GitHub setup instructions"
+    echo ""
+    echo "USAGE:"
+    echo "  copyssh           # Run the SSH setup process"
+    echo "  copyssh --help    # Show this help message"
+    echo ""
+    echo "REQUIREMENTS:"
+    echo "  • ssh-keygen (for key generation)"
+    echo "  • ssh-agent (for key management)"
+    echo "  • pbcopy (macOS) or xclip (Linux) for clipboard access"
+    echo "  • git (for commit signing configuration)"
+    echo ""
+    echo "FILES CREATED:"
+    echo "  ~/.ssh/id_ed25519         # Private SSH key"
+    echo "  ~/.ssh/id_ed25519.pub     # Public SSH key"
+    echo "  ~/.ssh/allowed_signers    # Git commit signing configuration"
+    echo ""
+    echo "NEXT STEPS:"
+    echo "  After running copyssh, visit https://github.com/settings/keys"
+    echo "  to add your SSH key to GitHub."
+    return 0
+  fi
+
   local email="${userConfig.email}"
   local ssh_key_path="$HOME/.ssh/id_ed25519"
   local pub_key_path="$ssh_key_path.pub"
