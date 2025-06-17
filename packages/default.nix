@@ -22,6 +22,7 @@
     zsh = import ./zsh.nix {inherit pkgs userConfig shellAliases ompTheme;};
     direnv = import ./direnv.nix {inherit pkgs;};
     xclip = import ./xclip.nix {inherit pkgs;};
+    alejandra = import ./alejandra.nix {inherit pkgs;};
     # Utility packages
     fd = import ./fd.nix {inherit pkgs;};
     ripgrep = import ./ripgrep.nix {inherit pkgs;};
