@@ -41,7 +41,6 @@
         import ./shells/temp-shell.nix {
           inherit pkgs shellAliases nvim-config;
           packages = packagesConfig.packageList;
-          ompTheme = packagesConfig.packages.oh-my-posh.themeConfig;
           userConfig = userConfig.userConfig;
         };
       

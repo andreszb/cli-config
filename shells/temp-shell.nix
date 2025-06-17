@@ -1,4 +1,4 @@
-{ pkgs, userConfig, ompTheme, shellAliases, nvim-config, packages }:
+{ pkgs, userConfig, shellAliases, nvim-config, packages }:
 
 let
   # Create config files for temporary shell
@@ -369,7 +369,7 @@ in pkgs.mkShell {
     export GIT_CONFIG_GLOBAL="$CONFIG_DIR/gitconfig"
     cp -f ${gitConfigFile} "$GIT_CONFIG_GLOBAL"
     
-    export OMP_CONFIG="${pkgs.writeText "omp.json" (builtins.toJSON ompTheme)}"
+    export OMP_CONFIG="${../themes/oh-my-posh/theme.json}"
     export ZDOTDIR="$CONFIG_DIR"
     cp -f ${zshrc} "$CONFIG_DIR/.zshrc"
     
