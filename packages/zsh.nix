@@ -44,6 +44,21 @@
       # Oh-my-posh
       eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.json)"
 
+      # Auto-list files when changing directories
+      cd() {
+        builtin cd "$@"
+        local exit_code=$?
+        if [ $exit_code -eq 0 ]; then
+          local file_count=$(ls -1 | wc -l)
+          if [ $file_count -le 20 ]; then
+            eza --icons --group-directories-first -t modified
+          else
+            eza --icons --group-directories-first -t modified | head -20
+          fi
+        fi
+        return $exit_code
+      }
+
       # Source all Zsh functions
       for script in ~/.config/scripts/zsh/*.sh; do
         [[ -r "$script" ]] && source "$script"
