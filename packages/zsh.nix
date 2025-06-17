@@ -25,9 +25,17 @@
       eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.json)"
       
       # Source all Zsh functions
-      for script in ~/.config/home-manager/cli-config/scripts/zsh/*.sh; do
+      for script in ~/.config/cli-config/scripts/zsh/*.sh; do
         [[ -r "$script" ]] && source "$script"
       done
     '';
+  };
+  
+  # Copy scripts to home directory
+  homeFiles = {
+    ".config/cli-config/scripts" = {
+      source = ./scripts;
+      recursive = true;
+    };
   };
 }
