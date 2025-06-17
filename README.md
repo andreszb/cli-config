@@ -77,6 +77,60 @@ If you already have home-manager installed:
 home-manager switch --flake .
 ```
 
+### Integration with Other Flakes
+
+This configuration can also be used as a module in other flakes that use home-manager. This is perfect for separating CLI tools from GUI applications.
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    
+    cli-config = {
+      url = "github:andreszb/cli-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+  };
+
+  outputs = { nixpkgs, home-manager, cli-config, ... }: {
+    homeConfigurations."yourusername" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      modules = [
+        # Import CLI configuration as a module
+        cli-config.homeManagerModules.default
+        
+        {
+          programs.cli-config = {
+            enable = true;
+            userConfig = {
+              name = "Your Name";
+              email = "your.email@example.com";
+              username = "yourusername";
+            };
+            # Optional: exclude specific packages
+            excludePackages = [ "neofetch" ];
+          };
+          
+          # Your GUI applications
+          programs.firefox.enable = true;
+          # ... other configurations
+        }
+      ];
+    };
+  };
+}
+```
+
+#### Module Options
+
+- `programs.cli-config.enable`: Enable the CLI configuration
+- `programs.cli-config.userConfig`: User settings (name, email, username)
+- `programs.cli-config.nvim-config`: Optional Neovim flake input
+- `programs.cli-config.shellAliases`: Custom shell aliases (defaults to built-in)
+- `programs.cli-config.excludePackages`: List of package names to exclude
+
 ## Usage
 
 ### Available Tools

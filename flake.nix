@@ -80,5 +80,14 @@
       packages = forAllSystems (system: {
         default = self.devShells.${system}.default.inputDerivation;
       });
+      
+      # Home Manager module for use in other flakes
+      homeManagerModules = {
+        default = import ./module.nix;
+        cli-config = import ./module.nix;
+      };
+      
+      # Legacy alias for compatibility
+      homeManagerModule = import ./module.nix;
     };
 }
