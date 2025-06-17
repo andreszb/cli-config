@@ -11,19 +11,25 @@ help() {
     local script_dir="$(dirname "${BASH_SOURCE[0]}")"
     
     # List all .sh files in the zsh scripts directory
-    for script in "$script_dir"/*.sh; do
-        if [[ -f "$script" && "$(basename "$script")" != "help.sh" ]]; then
-            local script_name=$(basename "$script" .sh)
-            echo "  • $script_name"
-        fi
-    done
+    # Use array to handle case where no .sh files exist
+    local scripts=("$script_dir"/*.sh)
+    if [[ -f "${scripts[1]}" ]]; then
+        for script in "${scripts[@]}"; do
+            if [[ -f "$script" && "$(basename "$script")" != "help.sh" ]]; then
+                local script_name=$(basename "$script" .sh)
+                echo "  • $script_name"
+            fi
+        done
+    else
+        echo "  No scripts found"
+    fi
     
     echo ""
     echo "Usage: Run any script name as a command"
     echo "Example: mkcd my-new-directory"
 }
 
-# If no arguments provided, show help
-if [[ $# -eq 0 ]]; then
+# Only run help if script is executed directly (not sourced)
+if [[ "${BASH_SOURCE[0]}" == "${0}" && $# -eq 0 ]]; then
     help
 fi
