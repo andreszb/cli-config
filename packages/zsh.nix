@@ -30,12 +30,10 @@
       done
     '';
   };
-  
-  # Copy scripts to home directory
-  homeFiles = {
-    ".config/cli-config/scripts" = {
-      source = ./scripts;
-      recursive = true;
-    };
+
+  home.file = {
+    source = ./scripts;
+    recursive = true;
   };
+
 }
