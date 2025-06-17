@@ -7,12 +7,15 @@ help() {
     echo "CLI Config - Available Zsh Scripts:"
     echo "==================================="
     
-    # Get the directory where this script is located
-    local script_dir="$(dirname "${BASH_SOURCE[0]}")"
+    # Use the SCRIPTS environment variable
+    if [[ -z "$SCRIPTS" ]]; then
+        echo "Error: SCRIPTS environment variable not set"
+        return 1
+    fi
     
     # List all .sh files in the zsh scripts directory
     # Use array to handle case where no .sh files exist
-    local scripts=("$script_dir"/*.sh)
+    local scripts=("$SCRIPTS"/*.sh)
     if [[ -f "${scripts[1]}" ]]; then
         for script in "${scripts[@]}"; do
             if [[ -f "$script" && "$(basename "$script")" != "help.sh" ]]; then

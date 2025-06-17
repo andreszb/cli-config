@@ -21,6 +21,9 @@
     };
     
     initContent = ''
+      # Set scripts directory environment variable
+      export SCRIPTS="$HOME/.config/scripts/zsh"
+      
       # Oh-my-posh
       eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.json)"
       
