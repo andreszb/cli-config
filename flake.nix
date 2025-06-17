@@ -10,7 +10,7 @@
     };
     
     nvim-config = {
-      url = "path:./nvim-config";
+      url = "github:andreszb/nvim-config";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

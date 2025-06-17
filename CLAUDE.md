@@ -11,6 +11,21 @@ This repository contains a modular Nix flake that provides a comprehensive CLI d
 
 The flake integrates a custom Neovim configuration from `github:andreszb/nvim-config` and provides a consistent development experience across multiple platforms (Linux x86_64/aarch64, macOS x86_64/aarch64).
 
+### Git Submodules and GitHub Integration
+
+This repository includes a git submodule for nvim-config for reference and quick local development:
+- `nvim-config/`: Neovim configuration submodule
+
+**Important**: While a git submodule is present for local development and reference, the flake configuration uses the GitHub repository (`github:andreszb/nvim-config`) as input rather than the local path. This ensures reproducibility and proper dependency management in the Nix ecosystem. The submodule serves as:
+- Quick reference for configuration structure
+- Local development environment for testing changes
+- Easy access to update and modify configurations before pushing to GitHub
+
+When making changes to the nvim-config:
+1. Make changes in the submodule directory
+2. Commit and push changes to the nvim-config GitHub repository
+3. Run `nix flake update` to update the lock file with the latest commits
+
 ### Modular Structure
 
 The configuration uses a flattened modular structure with logical separation:
