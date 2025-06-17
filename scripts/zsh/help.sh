@@ -18,9 +18,49 @@ help() {
     script_info[copyssh]="Generate SSH key and configure GitHub|copyssh"
     script_info[mkcd]="Create directory and cd into it|mkcd new-folder"
     
+    # Get terminal width, default to 80 if not available
+    local term_width=${COLUMNS:-$(tput cols 2>/dev/null || echo 80)}
+    
+    # Calculate column widths dynamically
+    local min_script_width=8
+    local min_desc_width=15
+    local min_example_width=10
+    local padding=6  # 2 spaces between each column
+    
+    # Available width for content (excluding padding)
+    local available_width=$((term_width - padding))
+    
+    # Calculate optimal column widths (proportional allocation)
+    local script_width=$((available_width * 20 / 100))  # 20% for script
+    local desc_width=$((available_width * 55 / 100))    # 55% for description
+    local example_width=$((available_width * 25 / 100)) # 25% for example
+    
+    # Ensure minimum widths
+    script_width=$((script_width < min_script_width ? min_script_width : script_width))
+    desc_width=$((desc_width < min_desc_width ? min_desc_width : desc_width))
+    example_width=$((example_width < min_example_width ? min_example_width : example_width))
+    
+    # Adjust if total width exceeds terminal width
+    local total_width=$((script_width + desc_width + example_width + padding))
+    if [[ $total_width -gt $term_width ]]; then
+        # Reduce description width first, then example width
+        local excess=$((total_width - term_width))
+        if [[ $excess -le $((desc_width - min_desc_width)) ]]; then
+            desc_width=$((desc_width - excess))
+        else
+            desc_width=$min_desc_width
+            example_width=$((example_width - (excess - (desc_width - min_desc_width))))
+            example_width=$((example_width < min_example_width ? min_example_width : example_width))
+        fi
+    fi
+    
+    # Create format strings
+    local header_format="%-${script_width}s  %-${desc_width}s  %-${example_width}s\n"
+    local row_format="%-${script_width}s  %-${desc_width}.${desc_width}s  %-${example_width}.${example_width}s\n"
+    
     # Print table header
-    printf "%-12s %-35s %s\n" "SCRIPT" "DESCRIPTION" "EXAMPLE"
-    printf "%-12s %-35s %s\n" "------" "-----------" "-------"
+    printf "$header_format" "SCRIPT" "DESCRIPTION" "EXAMPLE"
+    printf "$header_format" "$(printf '%*s' $script_width | tr ' ' '-')" "$(printf '%*s' $desc_width | tr ' ' '-')" "$(printf '%*s' $example_width | tr ' ' '-')"
     
     # List all .sh files in the zsh scripts directory
     local scripts=("$SCRIPTS"/*.sh)
@@ -34,7 +74,7 @@ help() {
                 local description="${info_string%|*}"
                 local example="${info_string#*|}"
                 
-                printf "%-12s %-35s %s\n" "$script_name" "$description" "$example"
+                printf "$row_format" "$script_name" "$description" "$example"
             fi
         done
     else
