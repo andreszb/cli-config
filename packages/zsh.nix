@@ -44,7 +44,7 @@
       # Oh-my-posh
       eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/theme.json)"
 
-      # Auto-list files when changing directories (works with zoxide)
+      # Auto-list files when changing directories
       function _list_files_after_cd() {
         local file_count=$(ls -1 2>/dev/null | wc -l)
         if [ $file_count -le 20 ]; then
@@ -54,14 +54,9 @@
         fi
       }
 
-      # Hook into zoxide's directory change
-      function __zoxide_hook() {
-        _list_files_after_cd
-      }
-
-      # Also hook into regular cd for when zoxide isn't used
-      cd() {
-        builtin cd "$@"
+      # Override cd function to work with zoxide
+      function cd() {
+        __zoxide_z "$@"
         local exit_code=$?
         if [ $exit_code -eq 0 ]; then
           _list_files_after_cd
