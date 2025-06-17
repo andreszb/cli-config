@@ -1,8 +1,6 @@
-{ pkgs }:
-
-{
+{pkgs}: {
   package = pkgs.bat;
-  
+
   homeManagerConfig = {
     enable = true;
     config = {

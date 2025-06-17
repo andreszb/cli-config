@@ -11,21 +11,19 @@
 #
 # Configuration options and more information: https://ohmyposh.dev/
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-{ pkgs }:
-
-let
+{pkgs}: let
   # Path to the external theme file
   themeFile = ../themes/oh-my-posh/theme.json;
 in {
   package = pkgs.oh-my-posh;
-  
+
   # Home manager configuration for oh-my-posh
   homeManagerConfig = {
     enable = true;
     enableBashIntegration = false;
     enableZshIntegration = false;
   };
-  
+
   # File configuration for theme.json
   fileConfig = {
     ".config/oh-my-posh/theme.json".source = themeFile;

@@ -1,8 +1,6 @@
-{ pkgs }:
-
-{
+{pkgs}: {
   package = pkgs.openssh;
-  
+
   homeManagerConfig = {
     enable = true;
     compression = true;

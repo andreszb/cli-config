@@ -1,5 +1,3 @@
-{ pkgs }:
-
-{
-  package = [ pkgs.zip pkgs.unzip ];
+{pkgs}: {
+  package = [pkgs.zip pkgs.unzip];
 }

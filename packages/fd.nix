@@ -1,5 +1,3 @@
-{ pkgs }:
-
-{
+{pkgs}: {
   package = pkgs.fd;
 }

@@ -1,6 +1,4 @@
-{ pkgs }:
-
-{
+{pkgs}: {
   # direnv is typically only configured via home-manager, not as a standalone package
   homeManagerConfig = {
     enable = true;
