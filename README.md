@@ -310,13 +310,13 @@ nvim src/calculator.py
 
 | Keymap | Action |
 |--------|--------|
-| `<leader>yr` | Run Python file |
-| `<leader>yi` | Run Python interactively |
+| `<leader>nr` | Run Python file |
+| `<leader>ni` | Run Python interactively |
 | `<leader>ff` | Format with Black |
-| `<leader>ys` | Sort imports |
-| `<leader>yt` | Run pytest |
-| `<leader>yT` | Run pytest on current file |
-| `<leader>yd` | Insert docstring template |
+| `<leader>ns` | Sort imports |
+| `<leader>nt` | Run pytest |
+| `<leader>nT` | Run pytest on current file |
+| `<leader>nd` | Insert docstring template |
 
 ### Debugging Keymaps
 

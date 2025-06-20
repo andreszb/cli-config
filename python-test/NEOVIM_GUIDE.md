@@ -62,23 +62,23 @@ This guide provides step-by-step instructions for using your Neovim Python confi
 
 #### Running Python Files
 1. **Open `src/calculator.py`**
-2. **Run the file:** `<leader>yr` (leader + y + r)
-3. **Run interactively:** `<leader>yi` (leader + y + i)
+2. **Run the file:** `<leader>nr` (leader + n + r)
+3. **Run interactively:** `<leader>ni` (leader + n + i)
 
 #### Code Formatting
 1. **Format with Black:** `<leader>ff` (leader + f + f)
-2. **Sort imports:** `<leader>ys` (leader + y + s)
+2. **Sort imports:** `<leader>ns` (leader + n + s)
 
 #### Docstring Generation
 1. **Place cursor on a function definition line**
-2. **Press `<leader>yd`** (leader + y + d)
+2. **Press `<leader>nd`** (leader + n + d)
 3. **Edit the generated docstring template**
 
 ### Testing with Pytest
 
 #### Running Tests
-1. **Run all tests:** `<leader>yt` (leader + y + t)
-2. **Run current file tests:** `<leader>yT` (leader + y + T)
+1. **Run all tests:** `<leader>nt` (leader + n + t)
+2. **Run current file tests:** `<leader>nT` (leader + n + T)
 
 #### Running Tests Manually
 ```bash
@@ -229,7 +229,7 @@ pytest --cov=src  # with coverage
        assert result == 4.0
    ```
 
-6. **Run the specific test:** `<leader>yT`
+6. **Run the specific test:** `<leader>nT`
 
 ### Example 2: Debugging a Web API
 
@@ -260,7 +260,7 @@ pytest --cov=src  # with coverage
    nvim src/data_processor.py
    ```
 
-2. **Run the main function:** `<leader>yr`
+2. **Run the main function:** `<leader>nr`
 
 3. **Check generated files:**
    ```bash
@@ -279,13 +279,13 @@ pytest --cov=src  # with coverage
 
 | Key Combination | Action |
 |----------------|--------|
-| `<leader>yr` | Run Python file |
-| `<leader>yi` | Run Python interactively |
+| `<leader>nr` | Run Python file |
+| `<leader>ni` | Run Python interactively |
 | `<leader>ff` | Format with Black |
-| `<leader>ys` | Sort imports |
-| `<leader>yt` | Run pytest |
-| `<leader>yT` | Run pytest on current file |
-| `<leader>yd` | Insert docstring template |
+| `<leader>ns` | Sort imports |
+| `<leader>nt` | Run pytest |
+| `<leader>nT` | Run pytest on current file |
+| `<leader>nd` | Insert docstring template |
 | `<F5>` | Start/Continue debugging |
 | `<F10>` | Debug step over |
 | `<F11>` | Debug step into |
