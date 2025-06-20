@@ -212,7 +212,7 @@
             "always_enabled": true
           },
           "style": "plain",
-          "template": "{{ if ne .Env.TERM \"linux\" }} {{ end }}",
+          "template": "{{ if ne .Env.TERM \"linux\" }} {{ end }}",
           "type": "status"
         }
       ],
