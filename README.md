@@ -14,6 +14,9 @@ This configuration offers two deployment modes:
 - 🎨 **Custom Oh-my-posh Theme**: Comprehensive prompt with git integration, language detection, and TTY fallback
 - 🔧 **Enhanced Zsh**: Syntax highlighting, autosuggestions, and custom functions
 - 📝 **Git Integration**: Pre-configured with Delta diff viewer and useful aliases
+- 🐍 **Python Development**: Full Python environment with LSP, debugging, and testing tools
+- ⚡ **Neovim Integration**: Custom Neovim configuration with Python support and comprehensive tooling
+- 🧪 **Python Examples**: Complete python-test directory with examples and debugging scenarios
 - 🖥️ **Cross-platform**: Supports Linux (x86_64/aarch64) and macOS (x86_64/aarch64)
 - 🧩 **Modular Design**: Each tool is self-contained and easily configurable
 
@@ -271,6 +274,62 @@ Git settings are in `packages/git.nix` and automatically use your user configura
 - **Linux**: Full support with all tools including xclip for clipboard integration
 - **macOS**: Full support with platform-appropriate alternatives
 - **Architecture**: Both x86_64 and aarch64 supported on Linux and macOS
+
+## Python Development
+
+This configuration includes a comprehensive Python development environment with examples and tutorials.
+
+### Quick Start
+
+```bash
+# Enter the development environment
+nix develop
+
+# Navigate to Python examples
+cd python-test
+
+# Open a Python file with full LSP support
+nvim src/calculator.py
+```
+
+### Features
+
+- **Python 3.12** with essential development packages
+- **LSP Support**: Pyright for type checking, auto-completion, and go-to-definition
+- **Debugging**: Full DAP support with UI, virtual text, and breakpoints
+- **Code Quality**: Black formatter, isort, flake8, mypy, pylint, ruff
+- **Testing**: pytest with coverage support
+- **Examples**: Complete `python-test/` directory with:
+  - Calculator module with comprehensive features
+  - Data processing with JSON/CSV handling
+  - Web API demonstration with requests
+  - Debugging examples and scenarios
+  - Full pytest test suite
+
+### Python Keymaps
+
+| Keymap | Action |
+|--------|--------|
+| `<leader>yr` | Run Python file |
+| `<leader>yi` | Run Python interactively |
+| `<leader>ff` | Format with Black |
+| `<leader>ys` | Sort imports |
+| `<leader>yt` | Run pytest |
+| `<leader>yT` | Run pytest on current file |
+| `<leader>yd` | Insert docstring template |
+
+### Debugging Keymaps
+
+| Keymap | Action |
+|--------|--------|
+| `<F5>` | Start/Continue debugging |
+| `<F10>` | Step over |
+| `<F11>` | Step into |
+| `<F12>` | Step out |
+| `<leader>db` | Toggle breakpoint |
+| `<leader>dr` | Toggle DAP UI |
+
+See `python-test/NEOVIM_GUIDE.md` for detailed instructions and tutorials.
 
 ## Troubleshooting
 
