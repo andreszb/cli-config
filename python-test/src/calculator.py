@@ -53,7 +53,7 @@ class Calculator:
             Difference of a and b
         """
         result = a - b
-    operation = f"{a} - {b} = {result}"
+        operation = f"{a} - {b} = {result}"
         self.history.append(operation)
         logger.info(f"Subtraction: {operation}")
         return result
