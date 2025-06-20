@@ -4,7 +4,11 @@ Example file for demonstrating debugging in Neovim.
 This file contains intentional bugs and breakpoints for debugging practice.
 """
 
-from src.calculator import Calculator
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent / "src"))
+
+from calculator import Calculator
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
