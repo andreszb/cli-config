@@ -54,14 +54,9 @@
         fi
       }
 
-      # Override cd function to work with zoxide
-      cd() {
-        __zoxide_z "$@"
-        local exit_code=$?
-        if [ $exit_code -eq 0 ]; then
-          _list_files_after_cd
-        fi
-        return $exit_code
+      # Hook to list files after cd (using zsh chpwd hook)
+      chpwd() {
+        _list_files_after_cd
       }
 
       # Source all Zsh functions
