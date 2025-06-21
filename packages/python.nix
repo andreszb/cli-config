@@ -38,6 +38,7 @@ in {
     pkgs.python3Packages.pip-tools  # pip-compile, pip-sync
     pkgs.ruff  # Fast Python linter and formatter
     pkgs.pyright  # Python language server
+    pkgs.uv  # Fast Python package installer and resolver
   ];
 
   homeManagerConfig = {
