@@ -205,3 +205,12 @@ The environment includes integrated configurations for:
 - This configuration represents a complete migration from hm_config with CLI-specific tools
 - All utility packages have been successfully migrated and enhanced
 - Font configuration migrated with compatibility adjustments
+
+## Project Scripting Notes
+
+### Shell Scripts
+- New `*.sh` scripts should be added to the `/scripts` directory
+- Ensure scripts have appropriate execution permissions (`chmod +x`)
+- Organize scripts logically by function or purpose
+- Include a brief comment at the top of each script explaining its functionality
+- Consider using descriptive names that indicate the script's purpose

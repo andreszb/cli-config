@@ -24,15 +24,15 @@ shell() {
     case "$env" in
         "web")
             echo "Switching to web development shell..."
-            nix develop "$config_dir#web-shell"
+            nix develop "$config_dir#web"
             ;;
         "python")
             echo "Switching to Python development shell..."
-            nix develop "$config_dir#python-shell"
+            nix develop "$config_dir#python"
             ;;
         "base")
             echo "Switching to base development shell..."
-            nix develop "$config_dir#base-shell"
+            nix develop "$config_dir#base"
             ;;
         "")
             echo "Usage: shell <environment>"
