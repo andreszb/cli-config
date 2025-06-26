@@ -37,7 +37,21 @@
     userConfig = import ./user;
     shellAliases = import ./shells/aliases.nix;
 
-    # Function to create temporary shell environment
+    # Function to create base shell environment (no language-specific tools)
+    mkBaseShell = system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      packagesConfig = import ./packages {
+        inherit pkgs shellAliases;
+        userConfig = userConfig.userConfig;
+      };
+    in
+      import ./shells/base-shell.nix {
+        inherit pkgs shellAliases nvim-config;
+        packages = packagesConfig.packageList;
+        userConfig = userConfig.userConfig;
+      };
+
+    # Function to create temporary shell environment (full environment)
     mkCliShell = system: let
       pkgs = nixpkgs.legacyPackages.${system};
       packagesConfig = import ./packages {
@@ -50,10 +64,33 @@
         packages = packagesConfig.packageList;
         userConfig = userConfig.userConfig;
       };
+
+    # Function to create Python shell environment (inherits from base)
+    mkPythonShell = system: let
+      baseShell = mkBaseShell system;
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+      import ./shells/python-shell.nix {
+        inherit pkgs shellAliases nvim-config baseShell;
+        userConfig = userConfig.userConfig;
+      };
+
+    # Function to create web development shell environment (inherits from base)
+    mkWebShell = system: let
+      baseShell = mkBaseShell system;
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+      import ./shells/web-shell.nix {
+        inherit pkgs shellAliases nvim-config baseShell;
+        userConfig = userConfig.userConfig;
+      };
   in {
     # For temporary shell: nix develop
     devShells = forAllSystems (system: {
       default = mkCliShell system;
+      python = mkPythonShell system;
+      web = mkWebShell system;
+      base = mkBaseShell system;
     });
 
     # For permanent installation: home-manager
