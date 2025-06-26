@@ -81,5 +81,10 @@
       source = ../scripts/zsh/mkcd.sh;
       executable = true;
     };
+
+    ".config/scripts/zsh/shell.sh" = {
+      source = ../scripts/zsh/shell.sh;
+      executable = true;
+    };
   };
 }
