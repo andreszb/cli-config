@@ -34,6 +34,7 @@
     zip = import ./zip.nix {inherit pkgs;};
     coreutils = import ./coreutils.nix {inherit pkgs;};
     claude-code = import ./claude-code.nix {inherit pkgs;};
+    texlive = import ./texlive.nix {inherit pkgs userConfig;};
   };
 
   # Extract packages from package configurations

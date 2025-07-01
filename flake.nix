@@ -39,7 +39,10 @@
 
     # Function to create base shell environment (no language-specific tools)
     mkBaseShell = system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       packagesConfig = import ./packages {
         inherit pkgs shellAliases;
         userConfig = userConfig.userConfig;
@@ -53,7 +56,10 @@
 
     # Function to create temporary shell environment (full environment)
     mkCliShell = system: let
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       packagesConfig = import ./packages {
         inherit pkgs shellAliases;
         userConfig = userConfig.userConfig;
@@ -68,7 +74,10 @@
     # Function to create Python shell environment (inherits from base)
     mkPythonShell = system: let
       baseShell = mkBaseShell system;
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
       import ./shells/python-shell.nix {
         inherit pkgs shellAliases nvim-config baseShell;
@@ -78,7 +87,10 @@
     # Function to create web development shell environment (inherits from base)
     mkWebShell = system: let
       baseShell = mkBaseShell system;
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
       import ./shells/web-shell.nix {
         inherit pkgs shellAliases nvim-config baseShell;
@@ -97,7 +109,10 @@
     homeConfigurations = {
       # Default configuration
       ${userConfig.userConfig.username} = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.${builtins.currentSystem or "x86_64-linux"};
+        pkgs = import nixpkgs {
+          system = builtins.currentSystem or "x86_64-linux";
+          config.allowUnfree = true;
+        };
 
         extraSpecialArgs = {
           userConfig = userConfig.userConfig;
@@ -110,7 +125,10 @@
             home = {
               username = userConfig.userConfig.username;
               homeDirectory =
-                if nixpkgs.legacyPackages.${builtins.currentSystem or "x86_64-linux"}.stdenv.isDarwin
+                if (import nixpkgs {
+                  system = builtins.currentSystem or "x86_64-linux";
+                  config.allowUnfree = true;
+                }).stdenv.isDarwin
                 then "/Users/${userConfig.userConfig.username}"
                 else "/home/${userConfig.userConfig.username}";
               stateVersion = "24.05";
