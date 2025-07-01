@@ -33,6 +33,7 @@
     tldr = import ./tldr.nix {inherit pkgs;};
     zip = import ./zip.nix {inherit pkgs;};
     coreutils = import ./coreutils.nix {inherit pkgs;};
+    claude-code = import ./claude-code.nix {inherit pkgs;};
   };
 
   # Extract packages from package configurations
