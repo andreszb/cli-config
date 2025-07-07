@@ -34,18 +34,29 @@ copyssh() {
     return 0
   fi
 
-  local email="${userConfig.email}"
+  local email="$(git config --global user.email)"
   local ssh_key_path="$HOME/.ssh/id_ed25519"
   local pub_key_path="$ssh_key_path.pub"
+  
+  # Validate email is set
+  if [[ -z "$email" ]]; then
+    echo "❌ Error: No email configured in git. Please run:"
+    echo "   git config --global user.email \"your-email@example.com\""
+    return 1
+  fi
   
   echo "🔐 Setting up SSH key for GitHub..."
   echo "📧 Using email: $email"
   echo ""
   
+  # Ensure .ssh directory exists
+  mkdir -p "$HOME/.ssh"
+  chmod 700 "$HOME/.ssh"
+  
   # Step 1: Generate SSH key if it doesn't exist
   if [[ ! -f "$ssh_key_path" ]]; then
     echo "1️⃣  Generating SSH key..."
-    ssh-keygen -t ed25519 -C "$email" -f "$ssh_key_path"
+    ssh-keygen -t ed25519 -C "$email" -f "$ssh_key_path" -N ""
     echo "✅ SSH key generated"
   else
     echo "1️⃣  SSH key already exists at $ssh_key_path"
@@ -58,19 +69,34 @@ copyssh() {
   # Step 3: Add key to agent
   echo "3️⃣  Adding key to SSH agent..."
   ssh-add "$ssh_key_path"
-  echo "📋 Keys in agent:"
-  ssh-add -l
+  if [[ $? -eq 0 ]]; then
+    echo "✅ Key added to SSH agent"
+    echo "📋 Keys in agent:"
+    ssh-add -l
+  else
+    echo "❌ Failed to add key to SSH agent"
+    return 1
+  fi
   echo ""
   
   # Step 4: Copy public key to clipboard
   echo "4️⃣  Copying public key to clipboard..."
+  if [[ ! -f "$pub_key_path" ]]; then
+    echo "❌ Error: Public key not found at $pub_key_path"
+    return 1
+  fi
+  
   if command -v pbcopy >/dev/null 2>&1; then
     cat "$pub_key_path" | pbcopy
     echo "✅ Public key copied to clipboard (macOS)"
   elif command -v xclip >/dev/null 2>&1; then
     cat "$pub_key_path" | xclip -selection clipboard
     echo "✅ Public key copied to clipboard (Linux)"
+  elif command -v wl-copy >/dev/null 2>&1; then
+    cat "$pub_key_path" | wl-copy
+    echo "✅ Public key copied to clipboard (Wayland)"
   else
+    echo "⚠️  No clipboard utility found. Here's your public key:"
     echo "📄 Public key content:"
     cat "$pub_key_path"
   fi
@@ -78,7 +104,8 @@ copyssh() {
   
   # Step 5: Create allowed_signers file for commit verification
   echo "5️⃣  Setting up commit signing..."
-  echo "$email $(cat $pub_key_path)" > ~/.ssh/allowed_signers
+  echo "$email $(cat "$pub_key_path")" > ~/.ssh/allowed_signers
+  chmod 644 ~/.ssh/allowed_signers
   git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
   echo "✅ Commit signing configured"
   echo ""
@@ -92,7 +119,7 @@ copyssh() {
   echo "   5. Test connection: ssh -T git@github.com"
   echo ""
   echo "🔍 Troubleshooting:"
-  echo "   • View public key: cat $pub_key_path"
+  echo "   • View public key: cat \"$pub_key_path\""
   echo "   • Test GitHub connection: ssh -T git@github.com"
   echo "   • Check SSH agent: ssh-add -l"
 }
