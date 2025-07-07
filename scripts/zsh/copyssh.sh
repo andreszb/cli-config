@@ -86,19 +86,37 @@ copyssh() {
     return 1
   fi
   
+  echo "📄 Public key content:"
+  cat "$pub_key_path"
+  echo ""
+  
+  local copied=false
   if command -v pbcopy >/dev/null 2>&1; then
-    cat "$pub_key_path" | pbcopy
-    echo "✅ Public key copied to clipboard (macOS)"
+    if cat "$pub_key_path" | pbcopy; then
+      echo "✅ Public key copied to clipboard (macOS)"
+      copied=true
+    else
+      echo "❌ Failed to copy to clipboard (macOS)"
+    fi
   elif command -v xclip >/dev/null 2>&1; then
-    cat "$pub_key_path" | xclip -selection clipboard
-    echo "✅ Public key copied to clipboard (Linux)"
+    if cat "$pub_key_path" | xclip -selection clipboard; then
+      echo "✅ Public key copied to clipboard (Linux - xclip)"
+      copied=true
+    else
+      echo "❌ Failed to copy to clipboard (Linux - xclip)"
+    fi
   elif command -v wl-copy >/dev/null 2>&1; then
-    cat "$pub_key_path" | wl-copy
-    echo "✅ Public key copied to clipboard (Wayland)"
-  else
-    echo "⚠️  No clipboard utility found. Here's your public key:"
-    echo "📄 Public key content:"
-    cat "$pub_key_path"
+    if cat "$pub_key_path" | wl-copy; then
+      echo "✅ Public key copied to clipboard (Wayland)"
+      copied=true
+    else
+      echo "❌ Failed to copy to clipboard (Wayland)"
+    fi
+  fi
+  
+  if [[ "$copied" == false ]]; then
+    echo "⚠️  No clipboard utility found or copy failed"
+    echo "💡 You can manually copy the public key shown above"
   fi
   echo ""
   
