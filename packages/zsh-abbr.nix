@@ -33,6 +33,9 @@
   j = "jobs";
   x = "exit";
   
+  # Directory navigation with zoxide
+  cd = "z";
+  
   # File operations (merged from aliases.nix with enhanced flags)
   cp = "cp -iv";
   mv = "mv -iv";
