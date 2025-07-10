@@ -390,11 +390,15 @@ in
 
       echo "🚀 Entering temporary CLI environment..."
       echo "📦 All tools loaded! Type 'exit' to leave."
+      echo "🔖 Version: $(git -C ${../.} rev-parse --short HEAD 2>/dev/null || echo 'unknown')"
       echo ""
       echo "💡 Available commands:"
       echo "   • copyssh             - Set up SSH keys for GitHub"
       echo "   • install-permanent   - Install this configuration permanently"
       echo "   • uninstall-permanent - Remove permanent installation and restore system"
+      echo ""
+      echo "ℹ️  Note: This temporary shell uses basic aliases. For zsh-abbr abbreviations,"
+      echo "   run 'install-permanent' to get the full permanent configuration."
       echo ""
 
       exec ${pkgs.zsh}/bin/zsh
