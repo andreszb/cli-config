@@ -35,7 +35,6 @@
 
     # Import configurations
     userConfig = import ./user;
-    shellAliases = import ./shells/aliases.nix;
 
     # Function to create base shell environment (no language-specific tools)
     mkBaseShell = system: let
@@ -44,12 +43,12 @@
         config.allowUnfree = true;
       };
       packagesConfig = import ./packages {
-        inherit pkgs shellAliases;
+        inherit pkgs;
         userConfig = userConfig.userConfig;
       };
     in
       import ./shells/base-shell.nix {
-        inherit pkgs shellAliases nvim-config;
+        inherit pkgs nvim-config;
         packages = packagesConfig.packageList;
         userConfig = userConfig.userConfig;
       };
@@ -61,12 +60,12 @@
         config.allowUnfree = true;
       };
       packagesConfig = import ./packages {
-        inherit pkgs shellAliases;
+        inherit pkgs;
         userConfig = userConfig.userConfig;
       };
     in
       import ./shells/temp-shell.nix {
-        inherit pkgs shellAliases nvim-config;
+        inherit pkgs nvim-config;
         packages = packagesConfig.packageList;
         userConfig = userConfig.userConfig;
       };
@@ -80,7 +79,7 @@
       };
     in
       import ./shells/python-shell.nix {
-        inherit pkgs shellAliases nvim-config baseShell;
+        inherit pkgs nvim-config baseShell;
         userConfig = userConfig.userConfig;
       };
 
@@ -93,7 +92,7 @@
       };
     in
       import ./shells/web-shell.nix {
-        inherit pkgs shellAliases nvim-config baseShell;
+        inherit pkgs nvim-config baseShell;
         userConfig = userConfig.userConfig;
       };
   in {
@@ -116,7 +115,7 @@
 
         extraSpecialArgs = {
           userConfig = userConfig.userConfig;
-          inherit shellAliases nvim-config;
+          inherit nvim-config;
         };
 
         modules = [

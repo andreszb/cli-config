@@ -1,7 +1,6 @@
 {
   pkgs,
   userConfig,
-  shellAliases,
   nvim-config,
   packages,
 }: let
@@ -19,8 +18,17 @@
     # Completion
     autoload -Uz compinit && compinit
 
-    # Aliases
-    ${builtins.concatStringsSep "\n" (pkgs.lib.mapAttrsToList (k: v: "alias ${k}='${v}'") shellAliases)}
+    # Basic aliases
+    alias ls='eza --icons'
+    alias ll='eza -la --icons --git'
+    alias la='eza -a --icons'
+    alias lt='eza --tree --icons'
+    alias v='nvim'
+    alias vi='nvim'
+    alias vim='nvim'
+    alias cat='bat'
+    alias grep='rg'
+    alias find='fd'
 
     # FZF
     export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

@@ -1,7 +1,6 @@
 {
   pkgs,
   userConfig,
-  shellAliases,
 }: let
   # Import oh-my-posh first to get the theme config
   oh-my-posh = import ./oh-my-posh.nix {inherit pkgs;};
@@ -19,7 +18,7 @@
     openssh = import ./openssh.nix {inherit pkgs;};
     yazi = import ./yazi.nix {inherit pkgs;};
     zoxide = import ./zoxide.nix {inherit pkgs;};
-    zsh = import ./zsh.nix {inherit pkgs userConfig shellAliases ompTheme;};
+    zsh = import ./zsh.nix {inherit pkgs userConfig ompTheme;};
     direnv = import ./direnv.nix {inherit pkgs;};
     xclip = import ./xclip.nix {inherit pkgs;};
     alejandra = import ./alejandra.nix {inherit pkgs;};

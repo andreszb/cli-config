@@ -2,7 +2,6 @@
   pkgs,
   userConfig,
   ompTheme,
-  shellAliases,
 }: {
   package = pkgs.zsh;
   plugins = [
@@ -16,10 +15,9 @@
 
   homeManagerConfig = {
     enable = true;
-    inherit shellAliases;
     oh-my-zsh = {
       enable = true;
-      plugins = ["git" "sudo" "colored-man-pages" "command-not-found" "aliases" "fzf"];
+      plugins = ["sudo" "colored-man-pages" "command-not-found" "aliases" "fzf"];
       extraConfig = ''
         # Required for autocomplete with box: https://unix.stackexchange.com/a/778868
         zstyle ':completion:*' completer _expand _complete _ignored _approximate _expand_alias
@@ -37,6 +35,10 @@
     };
     syntaxHighlighting.enable = true;
     autosuggestion.enable = true;
+    zsh-abbr = {
+      enable = true;
+      abbreviations = import ./zsh-abbr.nix;
+    };
     initContent = ''
       # Set scripts directory environment variable
       export SCRIPTS="$HOME/.config/scripts/zsh"

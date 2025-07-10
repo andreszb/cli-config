@@ -1,7 +1,6 @@
 {
   pkgs,
   userConfig,
-  shellAliases,
   nvim-config,
   baseShell,
 }: let
@@ -28,8 +27,17 @@
     # Completion
     autoload -Uz compinit && compinit
 
-    # Aliases
-    ${builtins.concatStringsSep "\n" (pkgs.lib.mapAttrsToList (k: v: "alias ${k}='${v}'") shellAliases)}
+    # Basic aliases (Web shell includes basic CLI aliases)
+    alias ls='eza --icons'
+    alias ll='eza -la --icons --git'
+    alias la='eza -a --icons'
+    alias lt='eza --tree --icons'
+    alias v='nvim'
+    alias vi='nvim'
+    alias vim='nvim'
+    alias cat='bat'
+    alias grep='rg'
+    alias find='fd'
 
     # Web development aliases
     alias nr='npm run'
