@@ -19,16 +19,6 @@
   homeManagerConfig = {
     enable = true;
     enableBashIntegration = true;
-    enableZshIntegration = true;
-    extraOptions = [
-      "-1" # List one file per line
-      "--icons" # Show file type icons
-      "--git" # Show git status for files
-      "-a" # Show hidden files
-      "--group-directories-first" # Show directories before files
-      "--header" # Display column headers
-      "--classify" # Add file type indicators
-      "--time-style=relative" # Show human-readable timestamps
-    ];
+    enableZshIntegration = false;  # Disabled - using zsh-abbr instead
   };
 }

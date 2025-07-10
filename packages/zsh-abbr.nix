@@ -18,8 +18,8 @@
   gst = "git stash";
   gstp = "git stash pop";
   
-  # Directory navigation (merged from aliases.nix)
-  ls = "eza --icons";
+  # Directory navigation with eza (merged from aliases.nix + eza config)
+  ls = "eza -1 --icons --git -a --group-directories-first --header --classify --time-style=relative";
   l = "eza --icons --group-directories-first";
   la = "eza -a --icons";
   ll = "eza -la --icons --git";
