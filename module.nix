@@ -38,11 +38,6 @@ in {
       description = "Neovim configuration flake input (optional)";
     };
 
-    shellAliases = mkOption {
-      type = types.attrsOf types.str;
-      default = import ./shells/aliases.nix;
-      description = "Shell aliases to include";
-    };
 
     excludePackages = mkOption {
       type = types.listOf types.str;
@@ -58,7 +53,6 @@ in {
       packagesConfig = import ./packages {
         inherit pkgs;
         userConfig = cfg.userConfig;
-        shellAliases = cfg.shellAliases;
       };
 
       # Filter out excluded packages
