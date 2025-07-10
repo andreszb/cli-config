@@ -11,6 +11,7 @@
     pkgs.zsh-fzf-tab
     pkgs.zsh-nix-shell
     pkgs.zsh-you-should-use
+    pkgs.zsh-abbr
   ];
 
   homeManagerConfig = {
