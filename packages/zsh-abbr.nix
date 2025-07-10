@@ -6,6 +6,7 @@
   gaa = "git add --all";
   gc = "git commit";
   gcm = "git commit -m";
+  gcam = "git commit -am";
   gca = "git commit --amend";
   gp = "git push";
   gpl = "git pull";
@@ -19,13 +20,10 @@
   gstp = "git stash pop";
   
   # Directory navigation with eza (merged from aliases.nix + eza config)
-  ls = "eza -1 --icons --git -a --group-directories-first --header --classify --time-style=relative";
+  ls = "eza -1 --icons --group-directories-first";
   l = "eza --icons --group-directories-first";
-  la = "eza -a --icons";
-  ll = "eza -la --icons --git";
-  lla = "eza --icons --group-directories-first -la";
+  la = "eza -1 -a --icons";
   lt = "eza --tree --icons";
-  llt = "eza -la --tree --icons --git";
   
   # System commands
   c = "clear";
@@ -35,17 +33,14 @@
   
   # Directory navigation with zoxide
   cd = "z";
+  y = "yazi";
   
-  # File operations (merged from aliases.nix with enhanced flags)
+  # File operations 
   cp = "cp -iv";
   mv = "mv -iv";
   rm = "rm -iv";
   mkdir = "mkdir -p";
-  
-  # Editors (from aliases.nix)
-  v = "nvim";
-  vi = "nvim";
-  vim = "nvim";
+  mk = "(){ mkdir -p $1 && cd $1 }";
   
   # File viewing and search
   cat = "bat";
@@ -56,9 +51,6 @@
   ps = "procs";
   top = "btop";
   
-  # Network
-  http = "httpie";
-  
   # Nix commands
   nb = "nix build";
   nd = "nix develop";
@@ -68,11 +60,6 @@
   nfs = "nix flake show";
   
   # Darwin rebuild (macOS)
-  drb = "darwin-rebuild build --flake .#mini";
-  drs = "darwin-rebuild switch --flake .#mini";
-  
-  # Home Manager
-  hm = "home-manager";
-  hmb = "home-manager build --flake .";
-  hms = "home-manager switch --flake .";
+  drb = "sudo darwin-rebuild build --flake .#mini";
+  drs = "sudo darwin-rebuild switch --flake .#mini";
 }
