@@ -79,6 +79,13 @@
     zstyle ':autocomplete:*' default-context ""
     zstyle ':autocomplete:*' max-lines 10
     
+    # Enable live completion on each keypress
+    zstyle ':autocomplete:*' async yes
+    zstyle ':autocomplete:*' list-lines 10
+    zstyle ':autocomplete:*' recent-dirs cdr
+    zstyle ':autocomplete:*' insert-unambiguous yes
+    zstyle ':autocomplete:*' widget-style menu-select
+    
     # fzf-tab configuration
     zstyle ':fzf-tab:complete:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
     zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
