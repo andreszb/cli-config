@@ -60,11 +60,41 @@
     HISTFILE=~/.cli-shell-history
     setopt EXTENDED_HISTORY HIST_IGNORE_DUPS SHARE_HISTORY
 
-    # Completion
-    autoload -Uz compinit && compinit
+    # Load plugins
+    source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    source ${pkgs.zsh-autocomplete}/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+    source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+    
+    # Autosuggestion configuration
+    ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=8"
+    ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
+    
+    # zsh-autocomplete configuration
+    zstyle ':autocomplete:*' min-input 1
+    zstyle ':autocomplete:*' delay 0.1
+    zstyle ':autocomplete:tab:*' insert-unambiguous yes
+    zstyle ':autocomplete:tab:*' widget-style menu-select
+    zstyle ':autocomplete:*' default-context ""
+    zstyle ':autocomplete:*' max-lines 10
+    
+    # fzf-tab configuration
+    zstyle ':fzf-tab:complete:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+    zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+    zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+    zstyle ':fzf-tab:complete:zi:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+    zstyle ':fzf-tab:*' fzf-flags --height=50% --layout=reverse --border
+    zstyle ':fzf-tab:*' switch-group ',' '.'
+    
+    # zoxide integration with zsh-autocomplete
+    zstyle ':autocomplete:*' ignored-input 'z ##'
+    zstyle ':autocomplete:*' ignored-input 'zi ##'
+    
+    # Enable zoxide completions with fzf-tab
+    zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
 
-    # Aliases are handled by zsh-abbr in permanent configuration
-    # For temporary shell, we use basic aliases
+    # Basic aliases for temporary shell
     alias ls='eza --icons'
     alias ll='eza -la --icons --git'
     alias la='eza -a --icons'
@@ -84,10 +114,6 @@
 
     # Zoxide
     eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
-
-    # Syntax highlighting and autosuggestions
-    source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
     # Additional functions
     mkcd() {
@@ -397,8 +423,8 @@ in
       echo "   • install-permanent   - Install this configuration permanently"
       echo "   • uninstall-permanent - Remove permanent installation and restore system"
       echo ""
-      echo "ℹ️  Note: This temporary shell uses basic aliases. For zsh-abbr abbreviations,"
-      echo "   run 'install-permanent' to get the full permanent configuration."
+      echo "ℹ️  Note: This temporary shell now uses zsh-autocomplete and fzf-tab plugins"
+      echo "   for enhanced completion. Abbreviations work in permanent installation only."
       echo ""
 
       exec ${pkgs.zsh}/bin/zsh

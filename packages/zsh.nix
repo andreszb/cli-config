@@ -20,22 +20,40 @@
       enable = true;
       plugins = ["sudo" "colored-man-pages" "command-not-found" "aliases" "fzf"];
       extraConfig = ''
-        # Required for autocomplete with box: https://unix.stackexchange.com/a/778868
-        zstyle ':completion:*' completer _expand _complete _ignored _approximate _expand_alias
-        zstyle ':autocomplete:*' default-context curcontext
-        zstyle ':autocomplete:*' min-input 0
+        # zsh-autocomplete configuration
+        zstyle ':autocomplete:*' min-input 1
+        zstyle ':autocomplete:*' delay 0.1
+        zstyle ':autocomplete:tab:*' insert-unambiguous yes
+        zstyle ':autocomplete:tab:*' widget-style menu-select
+        zstyle ':autocomplete:*' default-context ""
+        zstyle ':autocomplete:*' max-lines 10
+        
+        # fzf-tab configuration
+        zstyle ':fzf-tab:complete:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+        zstyle ':fzf-tab:complete:z:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+        zstyle ':fzf-tab:complete:zi:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
+        zstyle ':fzf-tab:*' fzf-flags --height=50% --layout=reverse --border
+        zstyle ':fzf-tab:*' switch-group ',' '.'
+        
+        # zoxide integration with zsh-autocomplete
+        zstyle ':autocomplete:*' ignored-input 'z ##'
+        zstyle ':autocomplete:*' ignored-input 'zi ##'
+        
+        # Enable zoxide completions with fzf-tab
+        zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
 
         setopt HIST_FIND_NO_DUPS
-
-        autoload -Uz compinit
-        compinit
-
         setopt autocd  # cd without writing 'cd'
         setopt globdots # show dotfiles in autocomplete list
       '';
     };
     syntaxHighlighting.enable = true;
-    autosuggestion.enable = true;
+    autosuggestion = {
+      enable = true;
+      strategy = ["history" "completion"];
+      highlightStyle = "fg=8";
+    };
     zsh-abbr = {
       enable = true;
       abbreviations = import ./zsh-abbr.nix;
