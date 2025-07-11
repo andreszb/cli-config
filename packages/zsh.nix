@@ -52,7 +52,7 @@
     autosuggestion = {
       enable = true;
       strategy = ["history" "completion"];
-      highlightStyle = "fg=8";
+      highlight = "fg=8";
     };
     zsh-abbr = {
       enable = true;
