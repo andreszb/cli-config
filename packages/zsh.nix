@@ -20,20 +20,20 @@
       enable = true;
       plugins = ["sudo" "colored-man-pages" "command-not-found" "aliases" "fzf"];
       extraConfig = ''
-        # zsh-autocomplete configuration
+        # zsh-autocomplete configuration for live completion
         zstyle ':autocomplete:*' min-input 1
         zstyle ':autocomplete:*' delay 0.1
-        zstyle ':autocomplete:tab:*' insert-unambiguous yes
-        zstyle ':autocomplete:tab:*' widget-style menu-select
-        zstyle ':autocomplete:*' default-context ""
-        zstyle ':autocomplete:*' max-lines 10
-        
-        # Enable live completion on each keypress
         zstyle ':autocomplete:*' async yes
         zstyle ':autocomplete:*' list-lines 10
         zstyle ':autocomplete:*' recent-dirs cdr
-        zstyle ':autocomplete:*' insert-unambiguous yes
-        zstyle ':autocomplete:*' widget-style menu-select
+        zstyle ':autocomplete:*' add-space executables
+        zstyle ':autocomplete:*' default-context ""
+        zstyle ':autocomplete:*' completion-word-wrap yes
+        
+        # Tab completion configuration
+        zstyle ':autocomplete:tab:*' insert-unambiguous yes
+        zstyle ':autocomplete:tab:*' widget-style menu-select
+        zstyle ':autocomplete:tab:*' fzf-completion yes
         
         # fzf-tab configuration
         zstyle ':fzf-tab:complete:*' fzf-preview 'eza -1 --color=always $realpath 2>/dev/null || ls -1 --color=always $realpath 2>/dev/null'
